@@ -6,7 +6,7 @@ function custom_gutenberg_load_style() {
 //	 Enqueue editor styles.
 
 	add_editor_style( get_template_directory_uri() . '/assets/css/app.min.css' );
-	add_editor_style( custom_gutenberg_URL . 'assets/build/css/admin/editor-css.css' );
+	add_editor_style( CUSTOM_GUTENBERG_URL . 'assets/build/css/admin/editor-css.css' );
 }
 
 function custom_gutenberg_pallete_script() {
@@ -28,7 +28,7 @@ function custom_gutenberg_pallete_script() {
 }
 
 function custom_gutenberg_load_script() {
-    wp_register_style( 'adminfrontcss', custom_gutenberg_URL . 'assets/build/css/admin/admin.css' );
+    wp_register_style( 'adminfrontcss', CUSTOM_GUTENBERG_URL . 'assets/build/css/admin/admin.css' );
     wp_enqueue_style('adminfrontcss');
 }
 

@@ -19,6 +19,7 @@ plugins/your-awesome-plugin/        # → Root of your plugin.
 │   └── src/                        # → Assets source directory.
 ├── node_modules/                   # → JS packages (never edit).
 ├── src/                            # → PHP directory. 
+├── blocks/                         # → Blocks directory. 
 ├── templates/                      # → Templates for plugin views.
 ├── vendor/                         # → Composer packages (never edit).
 ├── .gitignore                      # → Git ignore file.
@@ -62,3 +63,18 @@ npm run build
 npm run build:production
 npm run start
 ```
+### How to create new block
+
+Go to plugin directory -> blocks, make a copy of the directory and name it as you want
+
+Inside the directory there is a class called the same as directory, add parameters as an example
+
+After that run command
+
+```
+composer dump-autoload -o
+```
+
+which will preload class.
+
+Finally, you need to specify class instance in function/gutenberg_register_blocks.php on line 50

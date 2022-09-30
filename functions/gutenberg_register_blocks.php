@@ -1,53 +1,6 @@
 <?php
-function gutenberg_block( $array, $fields = null ) {
-	! isset( $array['previewformat'] ) ? ( $array['previewformat'] = '.png' ) : null;
-	$preview           = custom_gutenberg_URL . 'blocks/' . $array['name'] . '/screenshot' . $array['previewformat'];
-	$registerblocktype = array(
-		'name'            => $array['name'], // slug
-		'title'           => $array['title'], // human-readable title
-		'render_template' => CUSTOM_GUTENBERG_PATH . 'blocks/' . $array['name'] . '/' . $array['name'] . '.php',
-		'category'        => GUTENBERG_CATSLUG,
-		'icon'            => 'admin-comments',
-		'keywords'        => array( $array['name'] ),
-		'example'         => array(
-			'attributes' => array(
-				'mode' => 'preview',
-				'data' => array(
-					'preview_image_help' => $preview
-				)
-			)
-		)
-	);
-	acf_register_block_type( $registerblocktype );
 
-	$newfields = array(
-		'key' => 'group_'.$array['name'],
-		'title' => $array['title'],
-		'fields' => $fields,
-		'location' => array(
-			array(
-				array(
-					'param' => 'block',
-					'operator' => '==',
-					'value' => 'acf/'.$array['name'],
-				),
-			),
-		),
-		'menu_order' => 0,
-		'position' => 'normal',
-		'style' => 'default',
-		'label_placement' => 'top',
-		'instruction_placement' => 'label',
-		'hide_on_screen' => '',
-		'active' => true,
-		'description' => '',
-	);
-
-
-	if ( $fields ) :
-		acf_add_local_field_group( $newfields );
-	endif;
-}
+namespace CustomGutenberg;
 
 /**
  * Creation of a category
@@ -56,17 +9,17 @@ function gutenberg_block( $array, $fields = null ) {
  *
  * @return array
  */
-function gutenberg_categories( $categories) {
-	return array_merge(
-		$categories,
-		array(
-			array(
-				'slug'  => GUTENBERG_CATSLUG,
-				'title' => GUTENBERG_CATTITLE,
-				'icon'  => 'dashicons-format-image',
-			),
-		)
-	);
+function gutenberg_categories( $categories ): array {
+    return array_merge(
+        array(
+            array(
+                'slug'  => GUTENBERG_CATSLUG,
+                'title' => GUTENBERG_CATTITLE,
+                'icon'  => 'dashicons-format-image',
+            ),
+        ),
+        $categories
+    );
 }
 
 add_filter( 'block_categories', 'gutenberg_categories', 10, 2 );
@@ -79,21 +32,69 @@ add_filter( 'block_categories', 'gutenberg_categories', 10, 2 );
  * @return array
  */
 function gutenberg_prepare_field( array $field ): array {
-	switch ( $field['type'] ) {
-		case 'image' :
-			! $field['return_format'] ?: $field['return_format'] = 'url';
-			break;
-		case 'repeater' :
-			! $field['layout'] ?: $field['layout'] = 'table';
-			break;
-	}
+    switch ( $field['type'] ) {
+        case 'image' :
+            ! $field['return_format'] ?: $field['return_format'] = 'url';
+            break;
+        case 'repeater' :
+            ! $field['layout'] ?: $field['layout'] = 'table';
+            break;
+    }
 
-	$field['key']          = $field['name'];
-	$field['translations'] = 'translate';
+    $field['key']          = $field['name'];
+    $field['translations'] = 'translate';
 
-	return $field;
+    return $field;
 }
 
-function gutenberg_defs() {
+$classes = [
+    new Demo\Demo(),
+];
 
+foreach ( $classes as $class ) {
+    $registerblocktype = array(
+        'name'            => $class->name, // slug
+        'title'           => $class->title, // human-readable title
+        'render_template' => $class->renderPath,
+        'category'        => GUTENBERG_CATSLUG,
+        'icon'            => $class->icon,
+        'keywords'        => array( $class->name ),
+        'example'         => array(
+            'attributes' => array(
+                'mode' => 'preview',
+                'data' => array(
+                    'preview_image_help' => $class->previewImagePath
+                )
+            )
+        )
+    );
+    acf_register_block_type( $registerblocktype );
+
+    $newfields = array(
+        'key'                   => 'group_' . $class->name,
+        'title'                 => $class->title,
+        'fields'                => apply_filters( 'custom_gutenberg_fields_' . $class->name, $class->fields() ),
+        'location'              => array(
+            array(
+                array(
+                    'param'    => 'block',
+                    'operator' => '==',
+                    'value'    => 'acf/' . $class->name,
+                ),
+            ),
+        ),
+        'menu_order'            => 0,
+        'position'              => 'normal',
+        'style'                 => 'default',
+        'label_placement'       => 'top',
+        'instruction_placement' => 'label',
+        'hide_on_screen'        => '',
+        'active'                => true,
+        'description'           => '',
+    );
+
+
+    if ( apply_filters( 'custom_gutenberg_fields_' . $class->name, $class->fields() ) ) :
+        acf_add_local_field_group( $newfields );
+    endif;
 }
