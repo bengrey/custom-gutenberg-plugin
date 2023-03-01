@@ -5,7 +5,7 @@
  * Plugin Name:         Custom Gutenberg
  * Description:         Custom gutenberg blocks for site
  * Version:             2.0
- * Requires at least:   7.0
+ * Requires at least:   5.0
  * Requires PHP:        7.4
  * Author:              misha
  * Author URI:          {https://github.com/bengrey/}

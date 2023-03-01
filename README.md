@@ -13,7 +13,7 @@ Make sure all dependencies have been installed before moving on:
 ## Structure
 
 ```
-plugins/your-awesome-plugin/        # → Root of your plugin.
+plugins/custom-gutenberg-plugin/    # → Root of your plugin.
 ├── assets/                         # → Assets directory.
 │   ├── build/                      # → Assets build directory.
 │   └── src/                        # → Assets source directory.
@@ -23,58 +23,31 @@ plugins/your-awesome-plugin/        # → Root of your plugin.
 ├── templates/                      # → Templates for plugin views.
 ├── vendor/                         # → Composer packages (never edit).
 ├── .gitignore                      # → Git ignore file.
-├── .stylelintrc                    # → Config for the style linter.
-├── .webpack.mix.js                 # → Laravel Mix configuration file.
 ├── CHANGELOG.md                    # → Changelog file for GH.
-├── composer.json                   # → Composer dependencies and scripts.
-├── composer.lock                   # → Composer lock file (never edit).
 ├── LICENSE                         # → License file.
-├── package.json                    # → JS dependencies and scripts.
-├── package-lock.json               # → Package lock file (never edit).
 ├── custom-gutenberg.php            # → Bootstrap plugin file.
 ├── README.md                       # → Readme MD for GitHub repository.
-~~├── readme.txt                      # → Readme TXT for the wp.org repository.~~
 └── uninstall.php                   # → Uninstall file.
 ```
 
-### SCSS Coding Standard (SCSSCS)
-
-We use a default standards for SCSS, but you can modify it in the `.stylelintrc` file.
-
-You can check SCSSCS using a CLI:
-
-```
-npm run cs:scss
-```
-
-## Frontend
-
-All assets are located in `assets/src/*`.
-
-All builds are located in `assets/build/*`.
-
-CSS preprocessor is SCSS. 
-
-We use [Laravel Mix](https://laravel-mix.com/) for the assets build. You can modify it in `.webpack.mix.js` file.
-
-For run Laravel mix you can use the next commands depend on situation:
-```
-npm run build
-npm run build:production
-npm run start
-```
 ### How to create new block
 
-Go to plugin directory -> blocks, make a copy of the directory and name it as you want
+Go to plugin directory -> blocks, make a copy of the directory and name it as you want. For instance name it demo2. 
+Inside demo2 rename a class to Demo2, and be sure to change namespace as well.
 
-Inside the directory there is a class called the same as directory, add parameters as an example
-
-After that run command
-
+After you changed namespace, go to functions/gutenberg_register_blocks.php and find on line 50 array $classes
+```php
+$classes = [
+    new Demo\Demo(),
+];
 ```
-composer dump-autoload -o
+
+And add to this array your class, for instance it will look like this
+```php
+$classes = [
+    new Demo\Demo(),
+    new demo2\Demo2(),
+];
 ```
 
-which will preload class.
-
-Finally, you need to specify class instance in function/gutenberg_register_blocks.php on line 50
+In class you can add fields, just return them as array of acf fields.
