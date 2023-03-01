@@ -32,7 +32,7 @@ plugins/custom-gutenberg-plugin/    # → Root of your plugin.
 
 ### How to create new block
 
-Go to plugin directory -> blocks, make a copy of the directory and name it as you want. For instance name it demo2. 
+Go to plugin directory -> blocks, make a copy of the directory and name it as you want. For instance name it demo2.
 Inside demo2 rename a class to Demo2, and be sure to change namespace as well.
 
 After you changed namespace, go to functions/gutenberg_register_blocks.php and find on line 50 array $classes

@@ -6,8 +6,8 @@ class Demo
 {
     public function __construct()
     {
-        $this->name = __('Demo', 'custom-gutenberg'); //human-readable title
-        $this->title = 'demo'; //slug
+        $this->title = __('Demo', 'custom-gutenberg'); //human-readable title
+        $this->name = 'demo'; //slug
         $this->icon = 'admin-comments';
         $this->category = 'theme';
         $this->previewImagePath = __DIR__ . '/screenshot.png';
