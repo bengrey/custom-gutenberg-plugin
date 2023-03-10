@@ -6,8 +6,5 @@
 /.codeception/_support/_generated/
 /assets/build/
 /node_modules/
-/vendor/
-/vendor-bin/
-/vendor_prefixed/
 .env.development
 .env.production
