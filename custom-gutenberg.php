@@ -74,10 +74,3 @@ add_filter("block_categories_all", function ($block_categories, $block_editor_co
     );
 
 }, 10, 2);
-
-add_action('init', 'gutenberg_block_register_block');
-
-function gutenberg_block_register_block()
-{
-    register_block_type(__DIR__ . '/block.json');
-}
