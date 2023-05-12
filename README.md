@@ -32,22 +32,16 @@ plugins/custom-gutenberg-plugin/    # → Root of your plugin.
 
 ### How to create new block
 
-Go to plugin directory -> blocks, make a copy of the directory and name it as you want. For instance name it demo2.
-Inside demo2 rename a class to Demo2, and be sure to change namespace as well.
+Go to plugin directory -> blocks, make a copy of the directory and name it as you want. For instance name it Demo2.
+Inside Demo2 rename a class to Demo2, and be sure to change namespace as well.
 
-After you changed namespace, go to functions/gutenberg_register_blocks.php and find on line 50 array $classes
+After you changed namespace, go to functions/Blocks.php and add your class using require_once
 ```php
-$classes = [
-    new Demo\Demo(),
-];
+require_once CG_BLOCKS . 'Demo2/Demo2.php';
+```
+after that init your new class
+```php
+new Demo2()
 ```
 
-And add to this array your class, for instance it will look like this
-```php
-$classes = [
-    new Demo\Demo(),
-    new demo2\Demo2(),
-];
-```
-
-In class you can add fields, just return them as array of acf fields.
+In class you can add your own fields, just return them as array of acf fields.
