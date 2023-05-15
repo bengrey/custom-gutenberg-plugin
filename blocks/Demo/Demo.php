@@ -42,11 +42,7 @@ class Demo extends CG_Default
 
     public function styles()
     {
-        /*TODO: enqueue styles for block*/
-    }
-
-    public function scripts()
-    {
-        /*TODO: enqueue scripts for block */
+        //for instance plugin_dir_url(__FILE__) . '/style.css',
+        return;
     }
 }

@@ -4,49 +4,45 @@ class CG_Default
 {
     public $name;
     public $title;
-    public $renderPath;
+    public $renderPath = __DIR__ . '/template.php';
     public $icon;
-    public $previewImagePath;
-    private $api_version;
+    public $previewImagePath = __DIR__ . '/screenshot.png';
+    private $api_version = 2;
 
     public function __construct()
     {
-        $this->renderPath = __DIR__ . '/template.php';
-        $this->api_version = 2;
-
         $registerblocktype = array(
-            'name' => 'acf/' . $this->name, // slug
+            'name' => $this->name, // slug
             'title' => $this->title, // human-readable title
             'category' => CG_CATSLUG,
             'icon' => $this->icon,
             'keywords' => array($this->name),
             'api_version' => $this->api_version,
-            "acf" => [
-                "mode" => "preview",
-                "renderTemplate" => $this->renderPath,
-                'example' => array(
-                    'attributes' => array(
-                        'mode' => 'preview',
-                        'data' => array(
-                            'preview_image_help' => $this->previewImagePath
-                        )
+            "mode" => "preview",
+            "render_template" => $this->renderPath,
+            'enqueue_style' => $this->styles(),
+            'example' => array(
+                'attributes' => array(
+                    'mode' => 'preview',
+                    'data' => array(
+                        'preview_image_help' => $this->previewImagePath
                     )
                 )
-            ],
+            )
         );
 
         acf_register_block_type($registerblocktype);
 
-        $newfields = array(
+        $newfields = [
             'key' => 'group_' . $this->name,
             'title' => $this->title,
-            'fields' => apply_filters('custom_gutenberg_fields_' . $this->name, $this->fields()),
+            'fields' => $this->fields(),
             'location' => array(
                 array(
                     array(
                         'param' => 'block',
                         'operator' => '==',
-                        'value' => 'acf/' . $this->name,
+                        'value' => "acf/$this->name",
                     ),
                 ),
             ),
@@ -58,12 +54,10 @@ class CG_Default
             'hide_on_screen' => '',
             'active' => true,
             'description' => '',
-        );
+            'show_in_rest' => 0,
+        ];
 
-
-        if (apply_filters('custom_gutenberg_fields_' . $this->name, $this->fields())) :
-            acf_add_local_field_group($newfields);
-        endif;
+        acf_add_local_field_group($newfields);
     }
 
     public function fields()
@@ -71,6 +65,12 @@ class CG_Default
         return [
 
         ];
+    }
+
+    public function styles()
+    {
+        //for instance plugin_dir_url(__FILE__) . '/style.css',
+        return;
     }
 }
 
