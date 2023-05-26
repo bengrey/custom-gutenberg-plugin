@@ -1,6 +1,6 @@
 <?php
-
-class Demo extends CG_Default
+namespace Demo;
+class Demo extends \CG_Default
 {
     public function __construct()
     {

@@ -24,17 +24,10 @@ define('CG_CATTITLE', 'Test blocks');
 define('CG_CATSLUG', 'test-blocks');
 
 include_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-if (!defined('CS_DEBUG')) {
-    /**
-     * Enable plugin debug mod.
-     */
-    define('CS_DEBUG', false);
-}
 /**
  * Path to the plugin root directory.
  */
-define('CS_PATH', plugin_dir_path(__FILE__));
+define('CG_PATH', plugin_dir_path(__FILE__));
 
 /**
  * Load admin styles
@@ -46,12 +39,22 @@ define('CG_BLOCKS', __DIR__ . '/blocks/');
 /**
  * Url to the plugin root directory.
  */
-define('CS_URL', plugin_dir_url(__FILE__));
+define('CG_URL', plugin_dir_url(__FILE__));
+
+spl_autoload_register('cg_autoloader');
+
+function cg_autoloader($class)
+{
+    $file = str_replace("\\", "/",__DIR__ ."/blocks/{$class}.php");
+    if (file_exists($file)) {
+        require_once $file;
+    }
+}
 
 if (function_exists('acf_register_block_type')) {
-    require_once CS_PATH . 'functions/Default.php';
+    require_once CG_PATH . 'functions/Default.php';
 
-    require_once CS_PATH . 'functions/Blocks.php';
+    require_once CG_PATH . 'functions/Blocks.php';
 }
 
 /**
